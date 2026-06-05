@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Engineering Skills Map</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0a0c0f;
+    --surface: #111318;
+    --surface2: #181c23;
+    --border: #1e2330;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --accent4: #10b981;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --danger: #ef4444;
+    --core: #00e5ff;
+    --important: #7c3aed;
+    --optional: #64748b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    padding: 48px 40px 32px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: 100px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(124,58,237,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-tag {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .header-sub {
+    color: var(--muted);
+    font-size: 12px;
+    max-width: 600px;
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 24px;
+    padding: 16px 40px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    background: var(--surface);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-core { background: var(--core); }
+  .dot-important { background: var(--important); }
+  .dot-optional { background: var(--optional); }
+  .dot-warning { background: var(--accent3); }
+
+  /* TIMELINE BAR */
+  .timeline-bar {
+    padding: 24px 40px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .timeline-bar h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 16px;
+  }
+
+  .timeline-track {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    position: relative;
+  }
+
+  .phase-block {
+    padding: 12px 14px;
+    border-radius: 4px;
+    position: relative;
+    cursor: default;
+  }
+
+  .phase-block:nth-child(1) { background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); }
+  .phase-block:nth-child(2) { background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); }
+  .phase-block:nth-child(3) { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); }
+  .phase-block:nth-child(4) { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); }
+  .phase-block:nth-child(5) { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); }
+
+  .phase-num {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+
+  .phase-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .phase-duration {
+    font-size: 11px;
+    color: var(--accent3);
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    padding: 32px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* CATEGORY */
+  .category {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .cat-header:hover { background: var(--surface2); }
+
+  .cat-icon {
+    font-size: 18px;
+    width: 32px;
+    text-align: center;
+  }
+
+  .cat-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #fff;
+    flex: 1;
+  }
+
+  .cat-phase-tag {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .phase-tag-1 { background: rgba(0,229,255,0.1); color: var(--core); border: 1px solid rgba(0,229,255,0.2); }
+  .phase-tag-2 { background: rgba(124,58,237,0.1); color: #a78bfa; border: 1px solid rgba(124,58,237,0.2); }
+  .phase-tag-3 { background: rgba(245,158,11,0.1); color: var(--accent3); border: 1px solid rgba(245,158,11,0.2); }
+  .phase-tag-4 { background: rgba(16,185,129,0.1); color: var(--accent4); border: 1px solid rgba(16,185,129,0.2); }
+  .phase-tag-5 { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+
+  .cat-toggle {
+    color: var(--muted);
+    font-size: 16px;
+    transition: transform 0.2s;
+  }
+  .cat-toggle.open { transform: rotate(180deg); }
+
+  .cat-body {
+    display: none;
+  }
+  .cat-body.open { display: block; }
+
+  /* SKILL CARDS */
+  .skills-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .skill-card {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .skill-card:last-child { border-bottom: none; }
+  .skill-card:hover { background: rgba(255,255,255,0.02); }
+
+  .skill-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+
+  .skill-name {
+    font-weight: 500;
+    color: #fff;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .priority-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .p-core { background: var(--core); box-shadow: 0 0 6px rgba(0,229,255,0.6); }
+  .p-important { background: var(--important); box-shadow: 0 0 6px rgba(124,58,237,0.6); }
+  .p-optional { background: var(--optional); }
+
+  .skill-desc {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .skill-resources {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .resource-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    transition: color 0.15s;
+    line-height: 1.4;
+  }
+  .resource-link:hover { color: #fff; }
+  .resource-link::before { content: '→'; font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+
+  .resource-free {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    background: rgba(16,185,129,0.15);
+    color: var(--accent4);
+    border: 1px solid rgba(16,185,129,0.2);
+    letter-spacing: 0.05em;
+    vertical-align: middle;
+    margin-left: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* PRIORITY BADGE */
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-core { background: rgba(0,229,255,0.1); color: var(--core); border: 1px solid rgba(0,229,255,0.25); }
+  .badge-important { background: rgba(124,58,237,0.1); color: #a78bfa; border: 1px solid rgba(124,58,237,0.25); }
+  .badge-optional { background: rgba(100,116,139,0.1); color: var(--muted); border: 1px solid rgba(100,116,139,0.25); }
+
+  /* REALITY CHECK BOX */
+  .reality-check {
+    margin: 24px 40px 0;
+    padding: 20px 24px;
+    background: rgba(245,158,11,0.05);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-left: 3px solid var(--accent3);
+    border-radius: 4px;
+  }
+
+  .reality-check h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent3);
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .reality-check p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  .reality-check p + p { margin-top: 8px; }
+
+  /* SCROLL HINT */
+  .scroll-hint {
+    text-align: center;
+    padding: 16px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    header, .legend, .main, .timeline-bar, .reality-check { padding-left: 16px; padding-right: 16px; }
+    .timeline-track { grid-template-columns: repeat(2, 1fr); gap: 4px; }
+    .phase-block:last-child { grid-column: span 2; }
+    h1 { font-size: 26px; }
+    .legend { gap: 12px; }
+    .cat-title { font-size: 14px; }
+  }
+
+  /* ANIMATIONS */
+  .category { animation: fadeUp 0.3s ease both; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .cat-body {
+    animation: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">// complete landscape · no shortcuts</div>
+  <h1>Data Engineering<br><span>Skills Map</span></h1>
+  <p class="header-sub">Every domain you need to know — foundational to advanced. Honest priority labels. Free resources only. Realistic timelines assuming 2–3 hrs/day of focused study.</p>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="dot dot-core"></div> Core — industry standard, expected in most roles</div>
+  <div class="legend-item"><div class="dot dot-important"></div> Important — valuable, often role-specific</div>
+  <div class="legend-item"><div class="dot dot-optional"></div> Optional — niche or advanced specialisation</div>
+  <div class="legend-item"><div class="dot dot-warning"></div> Phase label — when to prioritise this area</div>
+</div>
+
+<div class="timeline-bar">
+  <h2>// Realistic Learning Timeline</h2>
+  <div class="timeline-track">
+    <div class="phase-block">
+      <div class="phase-num">PHASE 01</div>
+      <div class="phase-title">Foundations</div>
+      <div class="phase-duration">Months 1–3</div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-num">PHASE 02</div>
+      <div class="phase-title">Core Stack</div>
+      <div class="phase-duration">Months 3–7</div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-num">PHASE 03</div>
+      <div class="phase-title">Cloud & Pipelines</div>
+      <div class="phase-duration">Months 6–12</div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-num">PHASE 04</div>
+      <div class="phase-title">Production Patterns</div>
+      <div class="phase-duration">Months 10–18</div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-num">PHASE 05</div>
+      <div class="phase-title">Advanced / Streaming</div>
+      <div class="phase-duration">Months 15–24+</div>
+    </div>
+  </div>
+</div>
+
+<div class="reality-check">
+  <h3>⚠ Reality Check</h3>
+  <p>These timelines assume 2–3 focused hours per day and building real projects alongside learning — not just watching tutorials. Most people take longer. Phases overlap; you do not finish one before starting another. Your SQL warehouse work maps to late Phase 1 / early Phase 2 — you are not starting from zero.</p>
+  <p>There is no finish line. Senior data engineers are still learning. The goal is employability at each phase, not completion of everything.</p>
+</div>
+
+<div class="main" id="main"></div>
+
+<div class="scroll-hint">click any category header to expand · all resources are free</div>
+
+<script>
+const categories = [
+  {
+    icon: "🐍",
+    title: "Python for Data Engineering",
+    phase: 1,
+    phaseLabel: "Phase 1",
+    skills: [
+      {
+        name: "Python Basics",
+        priority: "core",
+        desc: "Variables, loops, functions, error handling, file I/O. The absolute baseline.",
+        resources: [
+          { label: "Python.org Official Tutorial", url: "https://docs.python.org/3/tutorial/" },
+          { label: "CS50P – Harvard (free audit)", url: "https://cs50.harvard.edu/python/2022/" },
+          { label: "Automate the Boring Stuff (free online)", url: "https://automatetheboringstuff.com/" }
+        ]
+      },
+      {
+        name: "OOP & Modules",
+        priority: "core",
+        desc: "Classes, packaging code, writing reusable modules. Essential for pipeline code.",
+        resources: [
+          { label: "Real Python – OOP Guide", url: "https://realpython.com/python3-object-oriented-programming/" },
+          { label: "Python Modules – official docs", url: "https://docs.python.org/3/tutorial/modules.html" }
+        ]
+      },
+      {
+        name: "Pandas & Data Manipulation",
+        priority: "core",
+        desc: "DataFrames, merging, groupby, reading/writing files. Daily tool for transformation work.",
+        resources: [
+          { label: "Pandas Official Getting Started", url: "https://pandas.pydata.org/docs/getting_started/index.html" },
+          { label: "Kaggle Pandas Course (free)", url: "https://www.kaggle.com/learn/pandas" }
+        ]
+      },
+      {
+        name: "Virtual Environments & Packaging",
+        priority: "core",
+        desc: "venv, pip, requirements.txt, pyproject.toml. You need this before you can share any project.",
+        resources: [
+          { label: "Real Python – Virtual Environments", url: "https://realpython.com/python-virtual-environments-a-primer/" }
+        ]
+      },
+      {
+        name: "Type Hints & Pydantic",
+        priority: "important",
+        desc: "Static typing in Python, runtime data validation. Standard in production pipeline code.",
+        resources: [
+          { label: "Pydantic Docs", url: "https://docs.pydantic.dev/latest/" },
+          { label: "mypy – type checking", url: "https://mypy.readthedocs.io/en/stable/" }
+        ]
+      },
+      {
+        name: "Testing (pytest)",
+        priority: "important",
+        desc: "Unit tests for pipeline functions. Expected in any serious engineering role.",
+        resources: [
+          { label: "pytest official docs", url: "https://docs.pytest.org/en/stable/" },
+          { label: "Real Python – pytest guide", url: "https://realpython.com/pytest-python-testing/" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "🔌",
+    title: "Data Ingestion — Batch",
+    phase: 2,
+    phaseLabel: "Phase 2",
+    skills: [
+      {
+        name: "API Ingestion",
+        priority: "core",
+        desc: "Pulling data from REST APIs using Python (requests, httpx). Pagination, rate limiting, auth (OAuth, API keys). Extremely common in real projects.",
+        resources: [
+          { label: "Real Python – requests library", url: "https://realpython.com/python-requests/" },
+          { label: "httpx docs", url: "https://www.python-httpx.org/" },
+          { label: "Build a pipeline from a public API – tutorial", url: "https://www.startdataengineering.com/post/python-api-to-database/" }
+        ]
+      },
+      {
+        name: "Web Scraping",
+        priority: "important",
+        desc: "BeautifulSoup, Scrapy, Playwright for dynamic pages. Used when no API exists. Know it exists and how to do basic scraping.",
+        resources: [
+          { label: "Real Python – Web Scraping with BeautifulSoup", url: "https://realpython.com/beautiful-soup-web-scraper-python/" },
+          { label: "Scrapy official tutorial", url: "https://docs.scrapy.org/en/latest/intro/tutorial.html" }
+        ]
+      },
+      {
+        name: "File-Based Ingestion",
+        priority: "core",
+        desc: "CSV, JSON, Parquet, Avro, XML from SFTP, S3, local. The most common ingestion type in enterprise.",
+        resources: [
+          { label: "PyArrow + Parquet guide", url: "https://arrow.apache.org/docs/python/parquet.html" },
+          { label: "Python SFTP with Paramiko", url: "https://realpython.com/python-sftp/" }
+        ]
+      },
+      {
+        name: "Database Ingestion (SQLAlchemy)",
+        priority: "core",
+        desc: "Reading from source databases programmatically. SQLAlchemy is the standard Python DB toolkit.",
+        resources: [
+          { label: "SQLAlchemy Official Docs", url: "https://docs.sqlalchemy.org/en/20/" },
+          { label: "Real Python – SQLAlchemy intro", url: "https://realpython.com/python-sqlalchemy/" }
+        ]
+      },
+      {
+        name: "Managed Connectors (Fivetran / Airbyte)",
+        priority: "important",
+        desc: "SaaS ELT connectors — Fivetran (paid, common in enterprise) and Airbyte (open source). You configure rather than code ingestion. Know what they are and how Airbyte works.",
+        resources: [
+          { label: "Airbyte Docs (free, open source)", url: "https://docs.airbyte.com/" },
+          { label: "Airbyte Quickstart", url: "https://docs.airbyte.com/using-airbyte/getting-started/" },
+          { label: "Fivetran free trial + docs", url: "https://fivetran.com/docs/getting-started" }
+        ]
+      },
+      {
+        name: "dlt (data load tool)",
+        priority: "important",
+        desc: "Lightweight Python-native ingestion library. Write pipelines in pure Python with auto schema inference. Growing fast in the modern stack.",
+        resources: [
+          { label: "dlt official docs", url: "https://dlthub.com/docs/intro" },
+          { label: "dlt quickstart tutorial", url: "https://dlthub.com/docs/getting-started/quick-start" },
+          { label: "dlt + DuckDB tutorial", url: "https://dlthub.com/docs/dlt-ecosystem/destinations/duckdb" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "⚡",
+    title: "Data Ingestion — Streaming & CDC",
+    phase: 4,
+    phaseLabel: "Phase 4",
+    skills: [
+      {
+        name: "Apache Kafka (concepts)",
+        priority: "core",
+        desc: "Topics, partitions, producers, consumers, consumer groups. Even if you don't operate Kafka, you will be expected to understand it.",
+        resources: [
+          { label: "Kafka Official Introduction", url: "https://kafka.apache.org/intro" },
+          { label: "Conduktor Kafka Fundamentals (free)", url: "https://www.conduktor.io/kafka/kafka-fundamentals/" }
+        ]
+      },
+      {
+        name: "Kafka Hands-On",
+        priority: "important",
+        desc: "Running Kafka locally, writing producers/consumers in Python (confluent-kafka or kafka-python).",
+        resources: [
+          { label: "Confluent Kafka Python Docs", url: "https://docs.confluent.io/kafka-clients/python/current/overview.html" },
+          { label: "Conduktor Kafka for Beginners (free course)", url: "https://courses.conduktor.io/courses/apache-kafka-for-beginners" }
+        ]
+      },
+      {
+        name: "CDC with Debezium",
+        priority: "important",
+        desc: "Change Data Capture from databases (PostgreSQL, MySQL, SQL Server). Debezium streams row-level changes into Kafka. Core to real-time pipelines.",
+        resources: [
+          { label: "Debezium Official Tutorial", url: "https://debezium.io/documentation/reference/stable/tutorial.html" },
+          { label: "Debezium + Kafka quickstart", url: "https://debezium.io/documentation/reference/stable/operations/embedded.html" }
+        ]
+      },
+      {
+        name: "Spark Structured Streaming",
+        priority: "optional",
+        desc: "Stream processing at scale with Spark. Relevant for big data streaming jobs. Learn after Kafka fundamentals.",
+        resources: [
+          { label: "Spark Structured Streaming Guide", url: "https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html" }
+        ]
+      },
+      {
+        name: "Apache Flink (awareness)",
+        priority: "optional",
+        desc: "Stateful stream processing. Increasingly relevant but complex. Awareness-level only unless targeting streaming roles.",
+        resources: [
+          { label: "Flink Official Concepts", url: "https://nightlies.apache.org/flink/flink-docs-release-1.20/docs/concepts/overview/" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "🔄",
+    title: "Transformation — SQL & dbt",
+    phase: 2,
+    phaseLabel: "Phase 2",
+    skills: [
+      {
+        name: "Advanced SQL",
+        priority: "core",
+        desc: "Window functions, CTEs, recursive queries, query optimisation, execution plans. Beyond basic SELECT.",
+        resources: [
+          { label: "Mode SQL Tutorial – Advanced", url: "https://mode.com/sql-tutorial/intro-to-advanced-sql" },
+          { label: "pgexercises.com (free practice)", url: "https://pgexercises.com/" },
+          { label: "SQLZoo", url: "https://sqlzoo.net/wiki/SQL_Tutorial" }
+        ]
+      },
+      {
+        name: "dbt Core",
+        priority: "core",
+        desc: "SQL transformation framework. Models, tests, sources, macros, incremental models, documentation. The current industry standard for transformation.",
+        resources: [
+          { label: "dbt Learn – free official courses", url: "https://courses.getdbt.com/collections" },
+          { label: "dbt Core Docs", url: "https://docs.getdbt.com/docs/introduction" },
+          { label: "Jaffle Shop tutorial project", url: "https://github.com/dbt-labs/jaffle_shop" }
+        ]
+      },
+      {
+        name: "dbt Advanced Patterns",
+        priority: "important",
+        desc: "Snapshots (SCD Type 2), custom materializations, packages, dbt-utils, exposures, semantic layer.",
+        resources: [
+          { label: "dbt Snapshots Docs", url: "https://docs.getdbt.com/docs/build/snapshots" },
+          { label: "dbt-utils package", url: "https://hub.getdbt.com/dbt-labs/dbt_utils/latest/" }
+        ]
+      },
+      {
+        name: "Apache Spark (PySpark)",
+        priority: "important",
+        desc: "Distributed data processing for large datasets that don't fit in memory. RDDs, DataFrames, Spark SQL.",
+        resources: [
+          { label: "PySpark Official Docs", url: "https://spark.apache.org/docs/latest/api/python/" },
+          { label: "Learning Spark (free preview chapters)", url: "https://pages.databricks.com/rs/094-YMS-629/images/LearningSpark2.0.pdf" }
+        ]
+      },
+      {
+        name: "DuckDB",
+        priority: "important",
+        desc: "Fast in-process analytical database. Used heavily in modern local-first and small-scale pipelines. Growing rapidly.",
+        resources: [
+          { label: "DuckDB Official Docs", url: "https://duckdb.org/docs/" },
+          { label: "MotherDuck Blog – DuckDB tutorials", url: "https://motherduck.com/blog/" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "☁️",
+    title: "Cloud Platforms",
+    phase: 2,
+    phaseLabel: "Phase 2–3",
+    skills: [
+      {
+        name: "GCP Core Services",
+        priority: "core",
+        desc: "GCS (object storage), BigQuery, Cloud Run, IAM, VPC basics. Focus here if BigQuery is your target.",
+        resources: [
+          { label: "Google Cloud Skills Boost – free tier", url: "https://www.cloudskillsboost.google/" },
+          { label: "BigQuery Docs – Getting Started", url: "https://cloud.google.com/bigquery/docs/introduction" },
+          { label: "GCP free tier overview", url: "https://cloud.google.com/free" }
+        ]
+      },
+      {
+        name: "BigQuery Deep Dive",
+        priority: "core",
+        desc: "Partitioning, clustering, nested/repeated fields, slots, cost optimisation, scheduled queries, BigQuery ML basics.",
+        resources: [
+          { label: "BigQuery Best Practices – Google Docs", url: "https://cloud.google.com/bigquery/docs/best-practices-costs" },
+          { label: "BigQuery Explained – Google Blog", url: "https://cloud.google.com/blog/topics/developers-practitioners/bigquery-explained-blog-series" }
+        ]
+      },
+      {
+        name: "AWS Core (S3, Glue, Redshift)",
+        priority: "important",
+        desc: "AWS is the largest cloud market share. Even if you focus on GCP, awareness of S3, Glue, Redshift, Lambda is expected.",
+        resources: [
+          { label: "AWS Free Tier", url: "https://aws.amazon.com/free/" },
+          { label: "AWS Skill Builder (free courses)", url: "https://skillbuilder.aws/" }
+        ]
+      },
+      {
+        name: "Azure Core (ADF, ADLS, Synapse)",
+        priority: "important",
+        desc: "Azure Data Factory, Azure Data Lake Storage, Synapse Analytics. Dominant in enterprise/corporate environments.",
+        resources: [
+          { label: "Microsoft Learn – free Azure path", url: "https://learn.microsoft.com/en-us/training/azure/" },
+          { label: "ADF Tutorials – Microsoft Docs", url: "https://learn.microsoft.com/en-us/azure/data-factory/introduction" }
+        ]
+      },
+      {
+        name: "Cloud Data Warehouses (Snowflake)",
+        priority: "important",
+        desc: "Snowflake is platform-agnostic and widely used. Virtual warehouses, stages, streams, tasks. Common in job specs.",
+        resources: [
+          { label: "Snowflake Quickstart Tutorials (free)", url: "https://quickstarts.snowflake.com/" },
+          { label: "Snowflake Docs", url: "https://docs.snowflake.com/" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "📦",
+    title: "Containerization & Infrastructure",
+    phase: 3,
+    phaseLabel: "Phase 3",
+    skills: [
+      {
+        name: "Docker",
+        priority: "core",
+        desc: "Build images, run containers, write Dockerfiles, docker-compose for local multi-service environments. Non-negotiable in modern DE. You cannot avoid this.",
+        resources: [
+          { label: "Docker Official Getting Started", url: "https://docs.docker.com/get-started/" },
+          { label: "Play with Docker (free browser lab)", url: "https://labs.play-with-docker.com/" },
+          { label: "TechWorld with Nana – Docker Tutorial (YouTube)", url: "https://www.youtube.com/watch?v=3c-iBn73dDE" }
+        ]
+      },
+      {
+        name: "Docker Compose",
+        priority: "core",
+        desc: "Running multi-container setups locally (e.g. Airflow + Postgres + Redis). Standard for local DE development.",
+        resources: [
+          { label: "Docker Compose Docs", url: "https://docs.docker.com/compose/" },
+          { label: "Airflow Docker Compose quickstart", url: "https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html" }
+        ]
+      },
+      {
+        name: "Kubernetes (K8s) — awareness",
+        priority: "important",
+        desc: "Container orchestration at scale. Used by platforms like Airflow on GKE. You don't operate it day-to-day, but you need to understand pods, services, deployments.",
+        resources: [
+          { label: "Kubernetes Official Concepts", url: "https://kubernetes.io/docs/concepts/" },
+          { label: "Play with Kubernetes (free)", url: "https://labs.play-with-k8s.com/" }
+        ]
+      },
+      {
+        name: "Terraform",
+        priority: "important",
+        desc: "Infrastructure as Code — provision cloud resources declaratively. Expected in senior roles. Start with GCP provider.",
+        resources: [
+          { label: "Terraform Official Tutorials (free)", url: "https://developer.hashicorp.com/terraform/tutorials" },
+          { label: "Terraform GCP Getting Started", url: "https://developer.hashicorp.com/terraform/tutorials/gcp-get-started" }
+        ]
+      },
+      {
+        name: "Linux & Bash Scripting",
+        priority: "core",
+        desc: "File system navigation, permissions, cron jobs, shell scripts. All cloud infrastructure runs on Linux.",
+        resources: [
+          { label: "The Linux Command Line (free PDF)", url: "https://linuxcommand.org/tlcl.php" },
+          { label: "Bash Scripting Tutorial – Ryan's Tutorials", url: "https://ryanstutorials.net/bash-scripting-tutorial/" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "🎼",
+    title: "Orchestration",
+    phase: 3,
+    phaseLabel: "Phase 3",
+    skills: [
+      {
+        name: "Apache Airflow",
+        priority: "core",
+        desc: "DAGs, operators, sensors, hooks, XComs, TaskFlow API, connections. The most common orchestrator in the market. You must know this.",
+        resources: [
+          { label: "Airflow Official Docs", url: "https://airflow.apache.org/docs/apache-airflow/stable/index.html" },
+          { label: "Astronomer – Learn Airflow (free)", url: "https://docs.astronomer.io/learn" },
+          { label: "Marc Lamberti – Airflow YouTube", url: "https://www.youtube.com/@marclamberti" }
+        ]
+      },
+      {
+        name: "Airflow on Docker / Local",
+        priority: "core",
+        desc: "Running Airflow locally via Docker Compose. Essential for development and portfolio projects.",
+        resources: [
+          { label: "Airflow Docker Compose guide", url: "https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html" }
+        ]
+      },
+      {
+        name: "Azure Data Factory",
+        priority: "important",
+        desc: "GUI-based orchestration and ingestion on Azure. Pipelines, triggers, linked services. Very common in enterprise.",
+        resources: [
+          { label: "ADF Docs – Microsoft Learn", url: "https://learn.microsoft.com/en-us/azure/data-factory/" },
+          { label: "ADF Tutorial – Microsoft Learn", url: "https://learn.microsoft.com/en-us/azure/data-factory/data-factory-tutorial" }
+        ]
+      },
+      {
+        name: "Prefect",
+        priority: "optional",
+        desc: "Python-native alternative to Airflow. Simpler setup, growing adoption. Worth awareness.",
+        resources: [
+          { label: "Prefect Docs", url: "https://docs.prefect.io/latest/" },
+          { label: "Prefect free tier", url: "https://www.prefect.io/pricing" }
+        ]
+      },
+      {
+        name: "Dagster",
+        priority: "optional",
+        desc: "Asset-based orchestration. Strong for data asset lineage. Growing in modern stacks.",
+        resources: [
+          { label: "Dagster Docs + Tutorial", url: "https://docs.dagster.io/getting-started" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "🗄️",
+    title: "Storage & File Formats",
+    phase: 2,
+    phaseLabel: "Phase 2",
+    skills: [
+      {
+        name: "Data Lake Architecture",
+        priority: "core",
+        desc: "Object storage (S3/GCS/ADLS) as a data lake. Medallion architecture, folder conventions, access control.",
+        resources: [
+          { label: "Databricks – What is a Data Lake", url: "https://www.databricks.com/discover/data-lakes/introduction" },
+          { label: "Azure Data Lake Best Practices", url: "https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices" }
+        ]
+      },
+      {
+        name: "Parquet & Columnar Formats",
+        priority: "core",
+        desc: "Parquet, ORC, Avro — when to use each. Parquet is the default columnar format. You will use this constantly.",
+        resources: [
+          { label: "Apache Parquet Docs", url: "https://parquet.apache.org/docs/" },
+          { label: "PyArrow Parquet Tutorial", url: "https://arrow.apache.org/docs/python/parquet.html" }
+        ]
+      },
+      {
+        name: "Delta Lake / Iceberg / Hudi",
+        priority: "important",
+        desc: "Open table formats that add ACID transactions to data lakes. Delta Lake (Databricks), Apache Iceberg (widely adopted), Apache Hudi. Know the concepts; learn one in depth.",
+        resources: [
+          { label: "Delta Lake Official Docs", url: "https://docs.delta.io/latest/index.html" },
+          { label: "Apache Iceberg Docs", url: "https://iceberg.apache.org/docs/latest/" },
+          { label: "Iceberg vs Delta vs Hudi comparison", url: "https://www.onehouse.ai/blog/apache-hudi-vs-delta-lake-vs-apache-iceberg-lakehouse-feature-comparison" }
+        ]
+      },
+      {
+        name: "Data Warehouse Design",
+        priority: "core",
+        desc: "Star schema, snowflake schema, SCD Types 1/2/3, fact/dimension tables, grain definition. You have hands-on experience here.",
+        resources: [
+          { label: "Kimball Group – DW concepts (free articles)", url: "https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "🛠️",
+    title: "Version Control & Collaboration",
+    phase: 1,
+    phaseLabel: "Phase 1",
+    skills: [
+      {
+        name: "Git & GitHub",
+        priority: "core",
+        desc: "Branching, merging, PRs, rebasing, resolving conflicts. Every single job requires this.",
+        resources: [
+          { label: "Pro Git (free online book)", url: "https://git-scm.com/book/en/v2" },
+          { label: "GitHub Skills (interactive)", url: "https://skills.github.com/" },
+          { label: "Oh My Git! (game-based learning)", url: "https://ohmygit.org/" }
+        ]
+      },
+      {
+        name: "CI/CD Basics",
+        priority: "important",
+        desc: "GitHub Actions for running tests and deployments automatically. dbt + GitHub Actions is a common pattern.",
+        resources: [
+          { label: "GitHub Actions Docs", url: "https://docs.github.com/en/actions" },
+          { label: "dbt CI with GitHub Actions", url: "https://docs.getdbt.com/docs/deploy/ci-jobs" }
+        ]
+      },
+      {
+        name: "Pre-commit Hooks",
+        priority: "optional",
+        desc: "sqlfluff, black, flake8 run before commits. Code quality automation. Nice to have.",
+        resources: [
+          { label: "pre-commit Docs", url: "https://pre-commit.com/" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "📊",
+    title: "Data Quality & Observability",
+    phase: 3,
+    phaseLabel: "Phase 3",
+    skills: [
+      {
+        name: "dbt Tests",
+        priority: "core",
+        desc: "not_null, unique, accepted_values, relationships. First line of data quality in a dbt project.",
+        resources: [
+          { label: "dbt Tests Docs", url: "https://docs.getdbt.com/docs/build/data-tests" }
+        ]
+      },
+      {
+        name: "Great Expectations",
+        priority: "important",
+        desc: "Python framework for data validation. Expectation suites, data docs, checkpoints. Common in production pipelines.",
+        resources: [
+          { label: "Great Expectations Docs", url: "https://docs.greatexpectations.io/docs/" },
+          { label: "GE Quickstart Tutorial", url: "https://docs.greatexpectations.io/docs/core/introduction/try_gx" }
+        ]
+      },
+      {
+        name: "Data Cataloging (OpenMetadata / DataHub)",
+        priority: "optional",
+        desc: "Metadata management, data lineage, discovery. Increasingly important in larger orgs.",
+        resources: [
+          { label: "OpenMetadata Docs", url: "https://docs.open-metadata.org/" },
+          { label: "DataHub Quickstart", url: "https://datahubproject.io/docs/quickstart" }
+        ]
+      },
+      {
+        name: "Logging & Alerting",
+        priority: "important",
+        desc: "Python logging module, structured logs, pipeline failure alerts (Slack, email). Basic but skipped by most learners.",
+        resources: [
+          { label: "Python Logging HOWTO", url: "https://docs.python.org/3/howto/logging.html" },
+          { label: "Real Python – Logging guide", url: "https://realpython.com/python-logging/" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "🔐",
+    title: "Security & Access Management",
+    phase: 3,
+    phaseLabel: "Phase 3",
+    skills: [
+      {
+        name: "IAM & Least Privilege",
+        priority: "core",
+        desc: "Cloud IAM roles, service accounts, least-privilege access. Every cloud project requires this.",
+        resources: [
+          { label: "GCP IAM Overview", url: "https://cloud.google.com/iam/docs/overview" },
+          { label: "AWS IAM Best Practices", url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html" }
+        ]
+      },
+      {
+        name: "Secrets Management",
+        priority: "core",
+        desc: "Never hardcode credentials. Environment variables, .env files, cloud secret managers (GCP Secret Manager, AWS Secrets Manager).",
+        resources: [
+          { label: "GCP Secret Manager Docs", url: "https://cloud.google.com/secret-manager/docs" },
+          { label: "python-dotenv", url: "https://pypi.org/project/python-dotenv/" }
+        ]
+      },
+      {
+        name: "Data Encryption at Rest/Transit",
+        priority: "optional",
+        desc: "Awareness of TLS, encryption keys, column-level encryption. Relevant for regulated industries.",
+        resources: [
+          { label: "GCP Encryption Overview", url: "https://cloud.google.com/docs/security/encryption/default-encryption" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "📐",
+    title: "Software Engineering Fundamentals",
+    phase: 2,
+    phaseLabel: "Phase 2",
+    skills: [
+      {
+        name: "Design Patterns for Pipelines",
+        priority: "important",
+        desc: "Factory, strategy, observer patterns applied to pipeline code. Makes large codebases maintainable.",
+        resources: [
+          { label: "Refactoring.Guru – Design Patterns (free)", url: "https://refactoring.guru/design-patterns" }
+        ]
+      },
+      {
+        name: "Idempotency",
+        priority: "core",
+        desc: "Pipelines that can re-run without creating duplicate data. Critical concept every DE must understand.",
+        resources: [
+          { label: "Start Data Engineering – Idempotency", url: "https://www.startdataengineering.com/post/idempotent-data-pipeline/" }
+        ]
+      },
+      {
+        name: "Backfilling Strategies",
+        priority: "core",
+        desc: "How to reprocess historical data after pipeline failure or logic change. Design for it upfront.",
+        resources: [
+          { label: "Airflow – Catchup and Backfill", url: "https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dag-run.html#catchup" }
+        ]
+      },
+      {
+        name: "Error Handling & Retry Logic",
+        priority: "core",
+        desc: "Transient failures, exponential backoff, dead-letter queues. Real pipelines fail; yours must recover.",
+        resources: [
+          { label: "tenacity library (Python retries)", url: "https://tenacity.readthedocs.io/en/latest/" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "📚",
+    title: "Core Reading (Books)",
+    phase: 1,
+    phaseLabel: "All Phases",
+    skills: [
+      {
+        name: "Fundamentals of Data Engineering",
+        priority: "core",
+        desc: "Reis & Housley. The definitive conceptual map of the field. Read it early and re-read it as you grow.",
+        resources: [
+          { label: "O'Reilly free trial access", url: "https://www.oreilly.com/start-trial/" },
+          { label: "Book summary – Data Engineering Wiki", url: "https://dataengineering.wiki/Books/Fundamentals+of+Data+Engineering" }
+        ]
+      },
+      {
+        name: "Designing Data-Intensive Applications",
+        priority: "core",
+        desc: "Kleppmann. How databases, streams, and distributed systems actually work. Dense but transformative. Read in Phase 3–4.",
+        resources: [
+          { label: "DDIA notes – GitHub (free summary)", url: "https://github.com/keyvanakbary/learning-notes/blob/master/books/designing-data-intensive-applications.md" }
+        ]
+      },
+      {
+        name: "Learning Spark (2nd Ed.)",
+        priority: "important",
+        desc: "Free PDF from Databricks. Core reference for PySpark.",
+        resources: [
+          { label: "Free PDF – Databricks", url: "https://pages.databricks.com/rs/094-YMS-629/images/LearningSpark2.0.pdf" }
+        ]
+      }
+    ]
+  },
+  {
+    icon: "🌐",
+    title: "Communities & Ongoing Learning",
+    phase: 1,
+    phaseLabel: "All Phases",
+    skills: [
+      {
+        name: "DataTalks.Club",
+        priority: "core",
+        desc: "Free DE Zoomcamp (end-to-end project course), MLOps Zoomcamp, active Slack community. One of the best free resources in the field.",
+        resources: [
+          { label: "DE Zoomcamp – GitHub", url: "https://github.com/DataTalksClub/data-engineering-zoomcamp" },
+          { label: "DataTalks.Club Community", url: "https://datatalks.club/" }
+        ]
+      },
+      {
+        name: "Start Data Engineering",
+        priority: "core",
+        desc: "Project-based tutorials covering real production patterns (idempotency, testing, CDC). Excellent for self-learners.",
+        resources: [
+          { label: "startdataengineering.com", url: "https://www.startdataengineering.com/" }
+        ]
+      },
+      {
+        name: "Seattle Data Guy / YouTube",
+        priority: "important",
+        desc: "Practical DE content — architecture walkthroughs, career advice, real project demos.",
+        resources: [
+          { label: "YouTube Channel", url: "https://www.youtube.com/@SeattleDataGuy" }
+        ]
+      },
+      {
+        name: "r/dataengineering",
+        priority: "important",
+        desc: "Reddit community. Real practitioners discussing tools, career paths, job market.",
+        resources: [
+          { label: "r/dataengineering", url: "https://www.reddit.com/r/dataengineering/" }
+        ]
+      },
+      {
+        name: "Data Engineering Weekly Newsletter",
+        priority: "optional",
+        desc: "Curated articles on tools, patterns, and industry news.",
+        resources: [
+          { label: "dataengineeringweekly.com", url: "https://www.dataengineeringweekly.com/" }
+        ]
+      }
+    ]
+  }
+];
+
+function renderPriorityBadge(priority) {
+  const map = { core: 'Core', important: 'Important', optional: 'Optional' };
+  const cls = { core: 'badge-core', important: 'badge-important', optional: 'badge-optional' };
+  return `<span class="badge ${cls[priority]}">${map[priority]}</span>`;
+}
+
+function renderDot(priority) {
+  const cls = { core: 'p-core', important: 'p-important', optional: 'p-optional' };
+  return `<div class="priority-dot ${cls[priority]}"></div>`;
+}
+
+function renderCategory(cat, index) {
+  const phaseClass = `phase-tag-${cat.phase}`;
+  const isOpen = index < 2;
+
+  const cards = cat.skills.map(skill => `
+    <div class="skill-card">
+      <div class="skill-top">
+        <div class="skill-name">
+          ${renderDot(skill.priority)}
+          ${skill.name}
+        </div>
+        ${renderPriorityBadge(skill.priority)}
+      </div>
+      <div class="skill-desc">${skill.desc}</div>
+      <div class="skill-resources">
+        ${skill.resources.map(r => `<a class="resource-link" href="${r.url}" target="_blank" rel="noopener">${r.label}<span class="resource-free">FREE</span></a>`).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  return `
+    <div class="category" style="animation-delay: ${index * 0.05}s">
+      <div class="cat-header" onclick="toggleCat(this)">
+        <span class="cat-icon">${cat.icon}</span>
+        <span class="cat-title">${cat.title}</span>
+        <span class="cat-phase-tag ${phaseClass}">${cat.phaseLabel}</span>
+        <span class="cat-toggle ${isOpen ? 'open' : ''}">▼</span>
+      </div>
+      <div class="cat-body ${isOpen ? 'open' : ''}">
+        <div class="skills-list">${cards}</div>
+      </div>
+    </div>
+  `;
+}
+
+document.getElementById('main').innerHTML = categories.map((c, i) => renderCategory(c, i)).join('');
+
+function toggleCat(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.cat-toggle');
+  body.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+</script>
+</body>
+</html>
